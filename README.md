@@ -6,8 +6,8 @@ How to install nodejs:
 # Step Run:
 1. Run on server with the command line in python terminal: flask --app chatbox run
 2. Run the client frontend with Follow Step in each line: 
-cd Frontend
-cd chatbox
-npm install    
-npm start
+ #cd Frontend
+#cd chatbox
+-#pm install    
+#npm start
 #Note: npm install just need run in the first install project

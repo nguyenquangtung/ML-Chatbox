@@ -8,6 +8,6 @@ How to install nodejs:
 2. Run the client frontend with Follow Step in each line: 
  #cd Frontend
 #cd chatbox
--#pm install    
+#npm install    
 #npm start
 #Note: npm install just need run in the first install project

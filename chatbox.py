@@ -1,58 +1,32 @@
-import json 
+from flask_cors import CORS, cross_origin
+from flask import Flask, request
+import pickle
+import random
+from colorama import Fore, Style, Back
+import json
 import numpy as np
 from tensorflow import keras
 from sklearn.preprocessing import LabelEncoder
-import colorama 
+import colorama
+from keras.preprocessing.text import Tokenizer
+from keras.models import load_model
+from keras_preprocessing.sequence import pad_sequences
+
 colorama.init()
-from colorama import Fore, Style, Back
 
-import random
-import pickle
-
-from flask import Flask,request
-from flask_cors import CORS,cross_origin
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-app.config['CORS_HEADERS']='Content-Type'
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 with open("intents.json") as file:
-        data = json.load(file)
-     # load tokenizer object
-with open('tokenizer.pickle', 'rb') as handle:
-        tokenizer = pickle.load(handle)
-
-    # load label encoder object
-with open('label_encoder.pickle', 'rb') as enc:
-        lbl_encoder = pickle.load(enc)
-        max_len = 20
-    # parameters
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-@app.route("/user",methods=['POST'])
-@cross_origin()
-def user():
-    jsony=request.json
-    dataValue=jsony['message']
-    responseMessage=''
-    model = keras.models.load_model('chat_model')
-    
-    result = model.predict(keras.preprocessing.sequence.pad_sequences(tokenizer.texts_to_sequences([dataValue]),
-                                             truncating='post', maxlen=max_len))
-    tag = lbl_encoder.inverse_transform([np.argmax(result)])
-    for i in data['intents']:
-            if i['tag'] == tag:
-                responseMessage=np.random.choice(i['responses'])
-        
-    return  str(responseMessage)
+    data = json.load(file)
+ # load tokenizer object
 
 
-
-""" def chat():
+def get_response(inp):
     # load trained model
-    model = keras.models.load_model('chat_model')
+    model = load_model('chat_model')
 
     # load tokenizer object
     with open('tokenizer.pickle', 'rb') as handle:
@@ -64,22 +38,57 @@ def user():
 
     # parameters
     max_len = 20
-    
+
+    # jsony = request.json
+    # dataValue = jsony['msg']
+    # responseMessage = ''
+
+    result = model.predict(pad_sequences(Tokenizer.texts_to_sequences(tokenizer, [inp]),
+                                         truncating='post', maxlen=max_len))
+    tag = LabelEncoder.inverse_transform(lbl_encoder, [np.argmax(result)])
+    for i in data['intents']:
+        if i['tag'] == tag:
+            responseMessage = np.random.choice(i['responses'])
+            return responseMessage
+        # else:
+        #     return "I do not understand..."
+
+
+def chat():
+    # load trained model
+    model = load_model('chat_model')
+
+    # load tokenizer object
+    with open('tokenizer.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+
+    # load label encoder object
+    with open('label_encoder.pickle', 'rb') as enc:
+        lbl_encoder = pickle.load(enc)
+
+    # parameters
+    max_len = 20
+
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
         inp = input()
         if inp.lower() == "quit":
+            print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL, "Bye")
             break
-        result = model.predict(keras.preprocessing.sequence.pad_sequences(tokenizer.texts_to_sequences([inp]),
+        result = model.predict(pad_sequences(Tokenizer.texts_to_sequences(tokenizer, [inp]),
                                              truncating='post', maxlen=max_len))
-        tag = lbl_encoder.inverse_transform([np.argmax(result)])
+        tag = LabelEncoder.inverse_transform(lbl_encoder, [np.argmax(result)])
 
         for i in data['intents']:
             if i['tag'] == tag:
-                print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(i['responses']))
+                print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL,
+                      np.random.choice(i['responses']))
+            # else:
+            #     return "I do not understand..."
 
         # print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL,random.choice(responses))
- """
-""" print(Fore.YELLOW + "Start messaging with the bot (type: ""quit"" to stop)!" + Style.RESET_ALL)
-chat()
- """
+if __name__ == "__main__":
+    print(Fore.YELLOW + "Let's chat! (type 'quit' to exit)" + Style.RESET_ALL)
+    while True:
+        chat()
+        break

@@ -8,19 +8,19 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 os.chdir(ROOT_DIR)
 
 # Check if intents change
-size = os.path.getsize("intents.json")
-check = ""
+# size = os.path.getsize("intents.json")
+# check = ""
 
-with open('intent_size.txt', 'r') as temp_file:
-    check = temp_file.readline()
+# with open('intent_size.txt', 'r') as temp_file:
+#     check = temp_file.readline()
 
-if str(size) == check:
-    print(" No changes in Intents file")
-else:
-    open('intent_size.txt', 'w').close()
-    with open('intent_size.txt', 'w') as temp_file:
-        temp_file.write(str(size))
-    subprocess.run(["python training.py"])
+# if str(size) == check:
+#     print(" No changes in Intents file")
+# else:
+#     open('intent_size.txt', 'w').close()
+#     with open('intent_size.txt', 'w') as temp_file:
+#         temp_file.write(str(size))
+#     subprocess.run(["python training.py"])
 
 #########################################################
 
@@ -43,4 +43,4 @@ def userchat():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=False)
+    app.run(debug=True)

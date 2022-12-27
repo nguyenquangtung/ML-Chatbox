@@ -92,5 +92,7 @@ class Chatbox {
   }
 }
 
-const chatbox = new Chatbox();
-chatbox.display();
+setTimeout(function () {
+  const chatbox = new Chatbox();
+  chatbox.display();
+}, 1000);

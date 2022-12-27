@@ -5,6 +5,7 @@ import random
 from colorama import Fore, Style, Back
 import json
 import numpy as np
+import os
 from tensorflow import keras
 from sklearn.preprocessing import LabelEncoder
 import colorama
@@ -14,6 +15,8 @@ from keras_preprocessing.sequence import pad_sequences
 
 colorama.init()
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(ROOT_DIR)
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})

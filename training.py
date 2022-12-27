@@ -2,12 +2,16 @@ import pickle
 import json
 import numpy as np
 import tensorflow as tf
+import os
 from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(ROOT_DIR)
 
 with open('intents.json') as file:
     data = json.load(file)

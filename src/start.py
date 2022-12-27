@@ -29,7 +29,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@app.get("/")
+@app.get("/chatbot")
 def index_get():
     return render_template("base.html")
 
@@ -43,4 +43,4 @@ def userchat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

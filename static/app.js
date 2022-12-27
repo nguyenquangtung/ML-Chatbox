@@ -46,7 +46,7 @@ class Chatbox {
     let msg1 = { name: "User", message: text1 };
     this.messages.push(msg1);
 
-    fetch("http://127.0.0.1:5000/predict", {
+    fetch("http://127.0.0.1:4000/predict", {
       method: "POST",
       body: JSON.stringify({ message: text1 }),
       mode: "cors",
@@ -92,5 +92,7 @@ class Chatbox {
   }
 }
 
-const chatbox = new Chatbox();
-chatbox.display();
+setTimeout(function () {
+  const chatbox = new Chatbox();
+  chatbox.display();
+}, 1000);

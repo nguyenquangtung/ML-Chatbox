@@ -29,7 +29,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@app.route("/chatbot", methods=["GET"])
+@app.route("/", methods=["GET"])
 def index_get():
     return render_template("base.html")
 

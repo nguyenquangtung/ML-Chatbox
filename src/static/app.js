@@ -47,8 +47,8 @@ class Chatbox {
     this.messages.push(msg1);
 
     let host = window.location.hostname;
-
-    fetch({ host } + "/predict", {
+    console.log(host);
+    fetch(host + "/predict", {
       method: "POST",
       body: JSON.stringify({ message: text1 }),
       mode: "cors",
